@@ -67,12 +67,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.actions {
-  flex: 0 0 100%;
-}
-
 button.save {
   margin: 0 10px 0 0;
+}
+
+.actions {
+  flex: 0 0 100%;
 }
 
 button:active {
