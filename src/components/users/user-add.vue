@@ -56,7 +56,6 @@ export default {
       axios.post(this.restUrl, this.user)
         .then(res => res.data)
         .then((res) => {
-          this.user = defaultUser
           alert('saved')
         })
     }
