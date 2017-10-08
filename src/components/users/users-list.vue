@@ -11,7 +11,7 @@
               <div class="length">
                 Пользователей в базе - {{ totalLength }}
               </div>
-              <button class="update">
+              <button class="update" @click="loadData">
                 Обновить таблицу
               </button>
             </div>
@@ -34,12 +34,12 @@
               </thead>
               <tbody>
                 <tr v-for="item in filtredUsers" :key="item.id">
-                  <th scope="row">{{ item.id }}</th>
-                  <td>{{ item.first_name }}</td>
-                  <td>{{ item.last_name }}</td>
+                  <th scope="row"><router-link :to="`/users/edit/${item.id}`">#{{ item.id }}</router-link></th>
+                  <td>{{ item.firstName }}</td>
+                  <td>{{ item.lastName }}</td>
                   <td>{{ item.isActive }}</td>
                   <td>{{ item.balance }}</td>
-                  <td>{{ item.email }}</td>
+                  <td>{{ item.eemail }}</td>
                   <td>{{ item.phone }}</td>
                   <td>{{ item.registered }}</td>
                 </tr>
@@ -58,10 +58,9 @@
 </template>
 
 <script>
-// import axios from 'axios'
-import users from '../assets/data.json'
-import RowsPerPage from './pagination/rows-per-page'
-import RowsPaginator from './pagination/rows-paginator'
+import axios from 'axios'
+import RowsPerPage from '../pagination/rows-per-page'
+import RowsPaginator from '../pagination/rows-paginator'
 
 export default {
   name: 'users-list',
@@ -72,10 +71,15 @@ export default {
   },
 
   data: () => ({
-    users: users,
+    users: [],
     perPage: 5,
-    pageNumber: 1
+    pageNumber: 1,
+    restUrl: 'http://localhost:3004/users/'
   }),
+
+  mounted () {
+    this.loadData()
+  },
 
   watch: {
     perPage () {
@@ -90,13 +94,21 @@ export default {
     },
 
     totalLength () {
-      return users.length
+      return this.users.length
     }
   },
 
   methods: {
     onChanged (page) {
       this.pageNumber = page
+    },
+
+    loadData () {
+      axios.get(this.restUrl)
+        .then(res => res.data)
+        .then(res => {
+          this.users = res
+        })
     }
   }
 }

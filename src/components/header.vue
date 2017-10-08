@@ -3,12 +3,11 @@
     <div class="container">
       <div class="row">
         <div class="logo">
-          <router-link to="/" exact>Vue.js Course</router-link>          
+          <router-link to="/" active-class="active">Vue.js Course</router-link>          
         </div>
         <nav>
-          <router-link to="/users-list" exact>Список пользователей</router-link>
-          <router-link to="/add-user" exact>Добавить пользователя</router-link>
-          <router-link to="/user" exact>Пользователь</router-link>
+          <router-link to="/users" active-class="active" exact>Список пользователей</router-link>
+          <router-link to="/users/add" active-class="active" exact>Добавить пользователя</router-link>
         </nav>
       </div>
     </div>
@@ -49,7 +48,7 @@ nav a:hover {
   color: #ffffff;
 }
 
-nav a.router-link-active {
+nav a.active {
   background: #44586a;
   color: #ffffff;
 }
