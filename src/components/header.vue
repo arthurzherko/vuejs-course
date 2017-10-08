@@ -8,6 +8,7 @@
         <nav>
           <router-link to="/users-list" exact>Список пользователей</router-link>
           <router-link to="/add-user" exact>Добавить пользователя</router-link>
+          <router-link to="/user" exact>Пользователь</router-link>
         </nav>
       </div>
     </div>

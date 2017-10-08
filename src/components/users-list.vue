@@ -124,7 +124,7 @@ export default {
 .table_content {
   margin: 15px;
   border: 1px solid #ccc;
-  border-radius: 6px
+  border-radius: 4px
 }
 
 .table_subtitle {
