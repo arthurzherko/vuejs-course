@@ -4,14 +4,16 @@
       <div class="row">
         <user-form v-model="user"></user-form>
 
-        <hr>
+        <div class="actions">
+          <hr>
+          <div class="json">
+            <pre>{{ user }}</pre>
+          </div>
 
-        <div class="json">
-          <pre>{{ user }}</pre>
+          <button type="button" @click="save" class="btn btn-success save">Сохранить изменения</button>
+          <button type="button" class="btn btn-danger">Удалить пользователя</button>
         </div>
-
-        <button type="button" @click="save" class="btn btn-success save">Сохранить изменения</button>
-        <button type="button" class="btn btn-danger">Удалить пользователя</button>
+        
       </div>
     </div>
   </div>
@@ -64,6 +66,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.actions {
+  flex: 0 0 100%;
+}
 
 button.save {
   margin: 0 10px 0 0;
