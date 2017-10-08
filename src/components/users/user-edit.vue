@@ -71,10 +71,6 @@ button.save {
   margin: 0 10px 0 0;
 }
 
-.actions {
-  flex: 0 0 100%;
-}
-
 button:active {
   transform: translate(1px, 1px);
 }
@@ -89,6 +85,10 @@ hr {
   border: 1px solid #cccccc;
   border-radius: 4px;
   margin-bottom: 20px;
+}
+
+.actions {
+  flex: 0 0 100%;
 }
 
 </style>
