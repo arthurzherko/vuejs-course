@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <zh-header></zh-header>
     <router-view/>
   </div>
