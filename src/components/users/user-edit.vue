@@ -4,14 +4,16 @@
       <div class="row">
         <user-form v-model="user"></user-form>
 
-        <hr>
+        <div class="actions">
+          <hr>
+          <div class="json">
+            <pre>{{ user }}</pre>
+          </div>
 
-        <div class="json">
-          <pre>{{ user }}</pre>
+          <button type="button" @click="save" class="btn btn-success save">Сохранить изменения</button>
+          <button type="button" class="btn btn-danger">Удалить пользователя</button>
         </div>
-
-        <button type="button" @click="save" class="btn btn-success save">Сохранить изменения</button>
-        <button type="button" class="btn btn-danger">Удалить пользователя</button>
+        
       </div>
     </div>
   </div>
@@ -83,6 +85,10 @@ hr {
   border: 1px solid #cccccc;
   border-radius: 4px;
   margin-bottom: 20px;
+}
+
+.actions {
+  flex: 0 0 100%;
 }
 
 </style>

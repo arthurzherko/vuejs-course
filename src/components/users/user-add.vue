@@ -4,7 +4,7 @@
       <div class="row">
         <user-form v-model="user"></user-form>
 
-        <button type="button" @click="save" class="btn btn-success save">Сохранить изменения</button>
+        <button type="button" @click="save" class="btn btn-success save">Добавить юзера</button>
       </div>
     </div>
   </div>
