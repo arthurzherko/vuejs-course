@@ -8,34 +8,38 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Home',
 
   data: () => ({
     users: [],
-    group_id: 'chop.choppp'
+    group_id: 'chop.choppp',
+    newusers: []
   }),
 
   mounted () {
-
+    this.loadData()
   },
 
   methods: {
-    
-    loadData() {
-      VK.init({
-          apiId: 143693191 // ID вашего приложения VK
-      });
 
-      function getMembers(group_id) {
-        VK.Api.call('groups.getById', {group_id: this.group_id, fields: 'city,sex'}, function(r) {
-            if(r.response) {
-              this.users = r.response
-            }
-        });
-      }
+    loadData () {
+      axios.get('https://api.vk.com/method/groups.getMembers?group_id=chop.choppp&fields=city,sex')
+        .then(res => res.data)
+        .then(res => {
+          this.users = res
+          this.filterUser()
+        })
+    },
+
+    filterUser () {
+      console.log(this.users.users.length)
+      this.newusers = this.users.users
+        .filter(item => item.city === 281)
+        .filter(item => item.sex === 1)
     }
-
   }
 }
 </script>
