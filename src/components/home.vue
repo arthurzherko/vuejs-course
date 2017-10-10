@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import 'http://vk.com/js/api/openapi.js'
-
 export default {
   name: 'Home',
 
