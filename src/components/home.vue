@@ -1,13 +1,44 @@
 <template>
   <div class="home">
-    <h2>Home Page of VueJs Course</h2>
-    <img src="./../assets/logo.png" alt="">
+    <!-- <h2>Home Page of VueJs Course</h2>
+    <img src="./../assets/logo.png" alt=""> -->
+
+    <pre>{{users}}</pre>
   </div>
 </template>
 
 <script>
+import 'http://vk.com/js/api/openapi.js'
+
 export default {
-  name: 'Home'
+  name: 'Home',
+
+  data: () => ({
+    users: [],
+    group_id: 'chop.choppp'
+  }),
+
+  mounted () {
+
+  },
+
+  methods: {
+    
+    loadData() {
+      VK.init({
+          apiId: 143693191 // ID вашего приложения VK
+      });
+
+      function getMembers(group_id) {
+        VK.Api.call('groups.getById', {group_id: this.group_id, fields: 'city,sex'}, function(r) {
+            if(r.response) {
+              this.users = r.response
+            }
+        });
+      }
+    }
+
+  }
 }
 </script>
 
