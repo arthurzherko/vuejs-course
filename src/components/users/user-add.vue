@@ -19,7 +19,7 @@ const defaultUser = {
   id: null,
   isActive: false,
   balance: '',
-  picture: 'http://placehold.it/128x128',
+  picture: 'https://placehold.it/128x128',
   age: 0,
   accessLevel: '',
   firstName: '',
