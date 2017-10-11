@@ -1,9 +1,15 @@
 <template>
-  <select :value="value" @input="changed">
-    <option v-for="item in list" :key="item" :value="item">
-      {{ item }}
-    </option>
-  </select>
+  <div>
+    <select :value="value" @input="changed">
+      <option v-for="item in list" :key="item" :value="item">
+        {{ item }}
+      </option>
+    </select>
+
+    <div class="per_page">
+      Выбрано элементов на страницу: {{ value }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -37,6 +43,14 @@ select {
   min-width: 130px;
   height: 35px;
   outline: none;
+}
+
+.per_page {
+  font-size: 14px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 15px 0;
+  line-height: 35px;
 }
 
 </style>

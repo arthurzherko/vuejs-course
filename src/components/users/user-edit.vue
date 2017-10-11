@@ -10,7 +10,7 @@
             <pre>{{ user }}</pre>
           </div>
 
-          <button type="button" @click="save" class="btn btn-success save">Сохранить изменения</button>
+          <button type="button" class="btn btn-success save">Сохранить изменения</button>
           <button type="button" class="btn btn-danger">Удалить пользователя</button>
         </div>
         
@@ -26,7 +26,8 @@ import userForm from './user-form'
 export default {
   name: 'user-edit',
   props: {
-    id: String
+    id: String,
+    required: true
   },
 
   components: {
@@ -37,10 +38,6 @@ export default {
     user: null,
     restUrl: 'http://localhost:3004/users/'
   }),
-
-  watch: {
-    $route: 'test'
-  },
 
   mounted () {
     this.loadData()
@@ -64,7 +61,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 button.save {

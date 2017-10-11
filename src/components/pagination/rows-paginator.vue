@@ -1,15 +1,15 @@
 <template>
   <div class="paginator">
     <div class="title">
-      Выбрана страница - {{ pageNumber }}
+      Выбрана страница - {{ value }}
     </div>
-    <button :disabled="disPrev" @click="prev" class="prev">
+    <button type="button" :disabled="disPrev" class="prev" @click="prev">
       <i class="fa fa-angle-double-left" aria-hidden="true"></i>
     </button>
-    <button :class="{ active: item === pageNumber }" v-for="item in totalPages" :key="item" @click="moveTo(item)">
+    <button type="button" v-for="item in totalPages" :key="item" :class="isActive(item)" @click="moveTo(item)">
       {{ item }}
     </button>
-    <button :disabled="disNext" @click="next" class="next">
+    <button type="button" :disabled="disNext" class="next" @click="next">
       <i class="fa fa-angle-double-right" aria-hidden="true"></i>
     </button>
   </div>
@@ -20,7 +20,7 @@ export default {
   name: 'rowsPaginator',
 
   props: {
-    pageNumber: {
+    value: {
       type: Number,
       required: true
     },
@@ -43,29 +43,35 @@ export default {
     },
 
     disPrev () {
-      return this.pageNumber === 1
+      return this.value === 1
     },
 
     disNext () {
-      return this.pageNumber === this.totalPages
+      return this.value === this.totalPages
+    }
+  },
+
+  watch: {
+    perPage () {
+      this.$emit('input', 1)
     }
   },
 
   methods: {
     prev () {
-      if (this.pageNumber > 1) {
-        this.$emit('changed', this.pageNumber - 1)
-      }
+      if (this.value > 1) this.moveTo(this.value - 1)
     },
 
     next () {
-      if (this.pageNumber < this.totalPages) {
-        this.$emit('changed', this.pageNumber + 1)
-      }
+      if (this.value < this.totalPages) this.moveTo(this.value + 1)
     },
 
     moveTo (index) {
-      this.$emit('changed', index)
+      this.$emit('input', index)
+    },
+
+    isActive (item) {
+      if (item === this.value) return 'active'
     }
   }
 }

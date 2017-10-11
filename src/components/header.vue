@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="logo">
-          <router-link to="/" active-class="active">Vue.js Course</router-link>          
+          <router-link to="/" active-class="active" exact>Vue.js Course</router-link>          
         </div>
         <nav>
           <router-link to="/users" active-class="active" exact>Список пользователей</router-link>
@@ -16,17 +16,10 @@
 
 <script>
 export default {
-  name: 'header',
-
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
+  name: 'header'
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .header {
   background: #cdd4db;

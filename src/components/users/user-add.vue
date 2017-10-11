@@ -4,7 +4,7 @@
       <div class="row">
         <user-form v-model="user"></user-form>
 
-        <button type="button" @click="save" class="btn btn-success save">Добавить юзера</button>
+        <button type="button" class="btn btn-success save" @click="save">Добавить юзера</button>
       </div>
     </div>
   </div>
@@ -44,29 +44,14 @@ export default {
     restUrl: 'http://localhost:3004/users/'
   }),
 
-  watch: {
-    user: () => {
-      console.log('chnaged')
-    }
-  },
-
   methods: {
     save () {
-      console.log(this.user, defaultUser)
       axios.post(this.restUrl, this.user)
         .then(res => res.data)
         .then((res) => {
-          alert('saved')
+          this.$router.push(`edit/${res.id}`)
         })
     }
   }
 }
 </script>
-
-<style>
-
-.user {
-  padding-bottom: 100px;
-}
-
-</style>

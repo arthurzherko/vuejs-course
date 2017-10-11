@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import Header from './components/header'
+import zhHeader from './components/header'
 
 export default {
   name: 'app',
 
   components: {
-    'zh-header': Header
+    zhHeader
   }
 }
 </script>
