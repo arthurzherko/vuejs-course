@@ -33,7 +33,8 @@
       <div class="form-group">
         <label for="last_name">URL картинки</label>
         <div class="avatar_wrap">
-          <img :src="value.picture" alt="" class="avatar">                
+          <img :src="value.picture" v-if="value.picture" alt="" class="avatar">
+          <div v-else>У юезра нет аватара</div>
         </div>
         <div class="input-group input-group-lg">
           <button type="button" class="btn btn-primary avatar">Выбрать новую</button>
@@ -45,7 +46,7 @@
       <div class="form-group">
         <label for="last_name">Возраст</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.age" placeholder="Age" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="number" class="form-control" v-model.number="value.age" placeholder="Age" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -112,11 +113,14 @@
 <script>
 export default {
   name: 'user-form',
-  props: ['value']
+  props: {
+    value: {
+      required: true
+    }
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .user_wrapper {
   margin: 60px 0 20px;

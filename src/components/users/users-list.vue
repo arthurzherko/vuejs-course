@@ -9,16 +9,13 @@
           <div class="table_content">
             <div class="table_subtitle">
               <div class="length">
-                Пользователей в базе - {{ totalLength }}
+                Пользователей в базе - {{ usersCount }}
               </div>
-              <button class="update" @click="loadData">
+              <button type="button" class="update" @click="loadData">
                 Обновить таблицу
               </button>
             </div>
-            <zh-perpage v-model.number="perPage"></zh-perpage>
-            <div class="per_page">
-              Выбрано элементов на страницу: {{ perPage }}
-            </div>
+            <rows-per-page v-model.number="perPage"></rows-per-page>
             <table class="table">
               <thead>
                 <tr>
@@ -29,11 +26,11 @@
                   <th>Баланс</th>
                   <th>Email</th>
                   <th>Телефон</th>
-                  <th>Зарегестрирован</th>
+                  <th>Зарегистрирован</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in filtredUsers" :key="item.id">
+                <tr v-for="item in filteredUsers" :key="item.id">
                   <th scope="row"><router-link :to="`/users/edit/${item.id}`">#{{ item.id }}</router-link></th>
                   <td>{{ item.firstName }}</td>
                   <td>{{ item.lastName }}</td>
@@ -46,11 +43,10 @@
               </tbody>
             </table>
           </div>
-          <zh-paginator :per-page="perPage"
-                        :length="totalLength"
-                        :page-number="pageNumber"
-                        v-on:changed="onChanged">
-          </zh-paginator>
+          <rows-paginator :per-page="perPage"
+                          :length="usersCount"
+                          v-model.number="pageNumber">
+          </rows-paginator>
         </div>
       </div>
     </div>
@@ -59,15 +55,15 @@
 
 <script>
 import axios from 'axios'
-import RowsPerPage from '../pagination/rows-per-page'
-import RowsPaginator from '../pagination/rows-paginator'
+import RowsPerPage from '@/components/pagination/rows-per-page'
+import RowsPaginator from '@/components/pagination/rows-paginator'
 
 export default {
   name: 'users-list',
 
   components: {
-    'zh-perpage': RowsPerPage,
-    'zh-paginator': RowsPaginator
+    RowsPerPage,
+    RowsPaginator
   },
 
   data: () => ({
@@ -81,28 +77,20 @@ export default {
     this.loadData()
   },
 
-  watch: {
-    perPage () {
-      this.pageNumber = 1
-    }
-  },
-
   computed: {
-    filtredUsers () {
-      const i = this.pageNumber * this.perPage
-      return this.users.slice(i - this.perPage, i)
+    filteredUsers () {
+      return this.users.filter((item, index) =>
+        index < this.pageNumber * this.perPage &&
+        index > this.pageNumber * this.perPage - this.perPage
+      )
     },
 
-    totalLength () {
+    usersCount () {
       return this.users.length
     }
   },
 
   methods: {
-    onChanged (page) {
-      this.pageNumber = page
-    },
-
     loadData () {
       axios.get(this.restUrl)
         .then(res => res.data)
@@ -114,7 +102,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 .table_wrapper {
@@ -163,14 +150,6 @@ button.update {
 
 button.update:active {
   transform: translate(0, 1px);
-}
-
-.per_page {
-  font-size: 14px;
-  display: inline-block;
-  vertical-align: top;
-  margin: 15px 0;
-  line-height: 35px;
 }
 
 </style>
