@@ -9,8 +9,7 @@
     "start": "npm run dev",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "fake": "json-server --watch telki.json --port 3004",
-    "fake2": "json-server --watch сучки.json --port 3005"
+    "fake2": "json-server --watch сучки.json --port 3004"
   },
   "dependencies": {
     "vue": "^2.4.2",

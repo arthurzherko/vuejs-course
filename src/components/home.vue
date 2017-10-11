@@ -76,8 +76,6 @@ export default {
       window.open(`http://vk.com/${this.users[this.counter]}`)
       console.log(this.counter, this.users[this.counter])
       this.counter += 1
-
-      // console.log(this.users[125])
     }
   }
 }
