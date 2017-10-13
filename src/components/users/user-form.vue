@@ -1,7 +1,7 @@
 <template>
-  <div class="user_wrapper" v-if="value">
+  <div class="user_wrapper" v-if="user">
     <div class="user_title">
-      {{value.firstName}} {{value.lastName}} {{value.phone}}
+      {{user.firstName}} {{user.lastName}} {{user.phone}}
     </div>
 
     <div class="user_content">
@@ -9,7 +9,7 @@
       <div class="form-group">
         <label>Имя</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.firstName" placeholder="First Name" aria-label="First Name" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.firstName" placeholder="First Name" aria-label="First Name" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -17,7 +17,7 @@
       <div class="form-group">
         <label>Фамилия</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.lastName" placeholder="Last Name" aria-label="Last Name" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.lastName" placeholder="Last Name" aria-label="Last Name" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -25,28 +25,36 @@
       <div class="form-group">
         <label>Email</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.eemail" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.eemail" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1">
         </div>
       </div>
 
-      <!-- Avatar-->
+      <!-- picture-->
       <div class="form-group">
         <label for="last_name">URL картинки</label>
-        <div class="avatar_wrap">
-          <img :src="value.picture" v-if="value.picture" alt="" class="avatar">
+        <div class="picture_wrap">
+          <img :src="user.picture" v-if="user.picture" alt="" class="picture">
           <div v-else>У юезра нет аватара</div>
         </div>
-        <div class="input-group input-group-lg">
-          <button type="button" class="btn btn-primary avatar">Выбрать новую</button>
-          <input type="text" class="form-control" v-model="value.picture" placeholder="Avatar" aria-label="Username" aria-describedby="sizing-addon1">
+        <div v-show="!showDropzone" class="input-group input-group-lg">
+          <input type="file" ref="picture" class="hidden" @change="uploadPicture">
+          <button type="button" class="btn btn-primary picture" @click="selectNewPicture">
+            <preloader :width="18" :height="18" v-if="preloader"></preloader>
+            <span v-else>Выбрать новую</span>
+          </button>
+          <input type="text" class="form-control" v-model="user.picture" placeholder="picture" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
+
+      <drop-zone v-show="showDropzone" v-model="user.picture"></drop-zone>
+
+      <button type="button" class="btn btn-primary toggle-dropzone" @click="toggleDropzone">Изменить способ загрузки</button>
 
       <!-- Age -->
       <div class="form-group">
         <label for="last_name">Возраст</label>
         <div class="input-group input-group-lg">
-          <input type="number" class="form-control" v-model.number="value.age" placeholder="Age" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="number" class="form-control" v-model.number="user.age" placeholder="Age" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -54,7 +62,7 @@
       <div class="form-group">
         <div class="form-check">
           <label class="form-check-label">
-            <input type="checkbox" v-model="value.isActive" class="form-check-input">
+            <input type="checkbox" v-model="user.isActive" class="form-check-input">
             Активный
           </label>
         </div>
@@ -64,7 +72,7 @@
       <div class="form-group">
         <label for="last_name">Баланс</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.balance" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.balance" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -72,7 +80,7 @@
       <div class="form-group">
         <label for="last_name">Телефон</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.phone" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.phone" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -80,7 +88,7 @@
       <div class="form-group">
         <label for="last_name">Адрес</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.address" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.address" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -88,34 +96,81 @@
       <div class="form-group">
         <label for="last_name">Компания</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.company" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" class="form-control" v-model="user.company" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
       <!-- About -->
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Биография</label>
-        <textarea class="form-control" v-model="value.about" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea class="form-control" :rows="30" v-model="user.about" id="exampleFormControlTextarea1" rows="3"></textarea>
       </div>
 
       <!-- Company -->
-      <div class="form-group">
-        <label for="last_name">Дата регистрации</label>
-        <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="value.registered" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
-        </div>
-      </div>
+      <label for="last_name">Дата регистрации</label>
+      <date-picker v-model="user.registered"></date-picker>
 
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'user-form',
+
+  model: {
+    prop: 'user'
+  },
+
   props: {
-    value: {
+    user: {
+      // type: Object,
       required: true
+    }
+  },
+
+  components: {
+    DatePicker: () => import('@/components/common/datepicker'),
+    DropZone: () => import('@/components/common/dropzone'),
+    preloader: () => import('@/components/common/preloader')
+  },
+
+  data: () => ({
+    showDropzone: true,
+    preloader: false
+  }),
+
+  methods: {
+
+    selectNewPicture () {
+      this.$refs.picture.click()
+    },
+
+    uploadPicture () {
+      this.preloader = true
+      const url = 'https://api.imgur.com/3/image'
+      const data = new FormData()
+      data.append('image', this.$refs.picture.files[0])
+
+      const config = {
+        headers: {
+          'Authorization': 'Client-ID f5ef23b782d3338'
+        }
+      }
+
+      axios.post(url, data, config)
+        .then(res => res.data)
+        .then(res => {
+          this.user.picture = res.data.link
+          this.$refs.picture.value = ''
+          this.preloader = false
+        })
+    },
+
+    toggleDropzone () {
+      this.showDropzone = !this.showDropzone
     }
   }
 }
@@ -140,22 +195,36 @@ export default {
   margin: 20px 15px;
 }
 
+textarea, input {
+  font-size: 14px;
+}
+
 label {
   font-weight: 600;
   font-size: 14px;
 }
 
-img.avatar {
-  margin-bottom: 20px;
-}
-
-textarea, input {
-  font-size: 14px;
-}
-
-button.avatar {
+button.picture {
   display: block;
   margin-right: 10px;
+  min-width: 140px;
+}
+
+img.picture {
+  margin-bottom: 20px;
+  max-width: 300px;
+}
+
+button.toggle-dropzone {
+  margin: 30px 0;
+}
+
+textarea {
+  min-height: 150px;
+}
+
+.hidden {
+  display: none;
 }
 
 </style>

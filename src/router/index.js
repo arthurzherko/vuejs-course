@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/home'
-import UsersList from '@/components/users/users-list'
-import AddUser from '@/components/users/user-add'
-import UserEdit from '@/components/users/user-edit'
-import Users from '@/components/users/users'
+const Home = () => import('@/components/home')
+const Users = () => import('@/components/users/users')
+const UsersList = () => import('@/components/users/users-list')
+const UserEdit = () => import('@/components/users/user-edit')
+const AddUser = () => import('@/components/users/user-add')
 
 Vue.use(Router)
 

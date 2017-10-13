@@ -12,7 +12,6 @@
 
 <script>
 import axios from 'axios'
-import userForm from './user-form'
 
 const date = new Date()
 const defaultUser = {
@@ -36,7 +35,7 @@ export default {
   name: 'user-add',
 
   components: {
-    userForm
+    userForm: () => import('./user-form')
   },
 
   data: () => ({

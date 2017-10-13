@@ -10,8 +10,11 @@
             <pre>{{ user }}</pre>
           </div>
 
-          <button type="button" class="btn btn-success save">Сохранить изменения</button>
-          <button type="button" class="btn btn-danger">Удалить пользователя</button>
+          <button type="button" class="btn btn-success save" @click="save">
+            <preloader :width="18" :height="18" v-if="preloader"></preloader>
+            <span v-else>Сохранить изменения</span>
+          </button>
+          <button type="button" class="btn btn-danger" @click="deleteUser">Удалить пользователя</button>
         </div>
         
       </div>
@@ -21,7 +24,6 @@
 
 <script>
 import axios from 'axios'
-import userForm from './user-form'
 
 export default {
   name: 'user-edit',
@@ -31,12 +33,14 @@ export default {
   },
 
   components: {
-    userForm
+    userForm: () => import('./user-form'),
+    Preloader: () => import('@/components/common/preloader')
   },
 
   data: () => ({
     user: null,
-    restUrl: 'http://localhost:3004/users/'
+    restUrl: 'http://localhost:3004/users/',
+    preloader: false
   }),
 
   mounted () {
@@ -56,6 +60,23 @@ export default {
         .then(res => {
           this.user = res
         })
+    },
+
+    save () {
+      this.preloader = true
+      axios.put(this.url, this.user)
+        .then(res => res.data)
+        .then((res) => {
+          this.preloader = false
+        })
+    },
+
+    deleteUser () {
+      axios.delete(this.url)
+        .then(res => res.data)
+        .then((res) => {
+          this.$router.push('/users')
+        })
     }
   }
 }
@@ -65,6 +86,7 @@ export default {
 
 button.save {
   margin: 0 10px 0 0;
+  min-width: 155px;
 }
 
 button:active {
