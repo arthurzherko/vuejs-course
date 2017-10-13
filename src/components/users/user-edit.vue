@@ -4,17 +4,21 @@
       <div class="row">
         <user-form v-model="user"></user-form>
 
-        <div class="actions">
+        <div class="json-wrap">
           <hr>
           <div class="json">
             <pre>{{ user }}</pre>
           </div>
 
-          <button type="button" class="btn btn-success save" @click="save">
-            <preloader :width="18" :height="18" v-if="preloader"></preloader>
-            <span v-else>Сохранить изменения</span>
-          </button>
-          <button type="button" class="btn btn-danger" @click="deleteUser">Удалить пользователя</button>
+          <span v-show="errors.all()" class="form-text text-danger" v-for="item in errors.all()" :key="item">*{{ item }}</span>
+
+          <div class="buttons-group">
+            <button type="button" class="btn btn-success save" @click="save">
+              <preloader :width="18" :height="18" v-if="preloader"></preloader>
+              <span v-else>Сохранить изменения</span>
+            </button>
+            <button type="button" class="btn btn-danger" @click="deleteUser">Удалить пользователя</button>
+          </div>
         </div>
         
       </div>
@@ -24,23 +28,26 @@
 
 <script>
 import axios from 'axios'
+import userForm from './user-form'
 
 export default {
   name: 'user-edit',
+
   props: {
     id: String,
     required: true
   },
 
   components: {
-    userForm: () => import('./user-form'),
+    userForm,
     Preloader: () => import('@/components/common/preloader')
   },
 
   data: () => ({
     user: null,
     restUrl: 'http://localhost:3004/users/',
-    preloader: false
+    preloader: false,
+    veeErrors: []
   }),
 
   mounted () {
@@ -63,6 +70,11 @@ export default {
     },
 
     save () {
+      this.$validator.validateAll()
+      if (this.errors.any()) {
+        return
+      }
+
       this.preloader = true
       axios.put(this.url, this.user)
         .then(res => res.data)
@@ -105,8 +117,12 @@ hr {
   margin-bottom: 20px;
 }
 
-.actions {
-  flex: 0 0 100%;
+.json pre {
+  padding-bottom: 20px;
+}
+
+.buttons-group {
+  margin-top: 20px;
 }
 
 </style>

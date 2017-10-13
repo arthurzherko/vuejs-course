@@ -9,24 +9,27 @@
       <div class="form-group">
         <label>Имя</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="user.firstName" placeholder="First Name" aria-label="First Name" aria-describedby="sizing-addon1">
+          <input type="text" name="firstName" class="form-control" :class=" { 'danger-input': errors.has('firstName') } " v-validate="'required|min:3'" data-vv-as="Имя" v-model="user.firstName" placeholder="Имя" aria-label="First Name" aria-describedby="sizing-addon1">
         </div>
+        <span v-show="errors.has('firstName')" class="form-text text-danger">{{ errors.first('firstName') }}</span>
       </div>
 
       <!-- Last Name -->
       <div class="form-group">
         <label>Фамилия</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="user.lastName" placeholder="Last Name" aria-label="Last Name" aria-describedby="sizing-addon1">
+          <input type="text" name="lastName" class="form-control" :class=" { 'danger-input': errors.has('firstName') } " v-validate="'required|min:3'" data-vv-as="Фамилия" v-model="user.lastName" placeholder="Фамилия" aria-label="Last Name" aria-describedby="sizing-addon1">
         </div>
+        <span v-show="errors.has('lastName')" class="form-text text-danger">{{ errors.first('lastName') }}</span>
       </div>
 
       <!-- Email -->
       <div class="form-group">
         <label>Email</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="user.eemail" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1">
+          <input type="text" name="email" class="form-control" :class=" { 'danger-input': errors.has('firstName') } " v-validate="'required|email'" data-vv-as="Email" v-model="user.eemail" placeholder="Email" aria-label="Email" aria-describedby="sizing-addon1">
         </div>
+        <span v-show="errors.has('email')" class="form-text text-danger">{{ errors.first('email') }}</span>
       </div>
 
       <!-- picture-->
@@ -54,8 +57,9 @@
       <div class="form-group">
         <label for="last_name">Возраст</label>
         <div class="input-group input-group-lg">
-          <input type="number" class="form-control" v-model.number="user.age" placeholder="Age" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" name="age" class="form-control" :class=" { 'danger-input': errors.has('firstName') } " v-validate="'numeric'" data-vv-as="Возраст" v-model.number="user.age" placeholder="Возраст" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
+        <span v-show="errors.has('age')" class="form-text text-danger">{{ errors.first('age') }}</span>
       </div>
 
       <!-- isActive -->
@@ -72,15 +76,16 @@
       <div class="form-group">
         <label for="last_name">Баланс</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="user.balance" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" name="balance" class="form-control" v-validate="'decimal:2'" data-vv-as="Баланс" v-model="user.balance" placeholder="Баланс" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
+        <span v-show="errors.has('balance')" class="form-text text-danger">{{ errors.first('balance') }}</span>
       </div>
 
       <!-- Phone -->
       <div class="form-group">
         <label for="last_name">Телефон</label>
         <div class="input-group input-group-lg">
-          <input type="text" class="form-control" v-model="user.phone" placeholder="Username" aria-label="Username" aria-describedby="sizing-addon1">
+          <input type="text" name="phone" class="form-control" v-model="user.phone" placeholder="Телефон" aria-label="Username" aria-describedby="sizing-addon1">
         </div>
       </div>
 
@@ -116,9 +121,19 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
+import VeeValidate, { Validator } from 'vee-validate'
+import ru from 'vee-validate/dist/locale/ru'
+
+Validator.addLocale(ru)
+Vue.use(VeeValidate, {
+  locale: 'ru'
+})
 
 export default {
   name: 'user-form',
+
+  inject: ['$validator'],
 
   model: {
     prop: 'user'
@@ -141,6 +156,10 @@ export default {
     showDropzone: true,
     preloader: false
   }),
+
+  mounted () {
+
+  },
 
   methods: {
 
@@ -225,6 +244,15 @@ textarea {
 
 .hidden {
   display: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #28a745;
+}
+
+input.danger-input {
+  border-color: #dc3545;
 }
 
 </style>

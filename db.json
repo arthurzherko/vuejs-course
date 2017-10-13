@@ -19,7 +19,7 @@
     {
       "id": 3,
       "isActive": false,
-      "balance": "$2,370.83",
+      "balance": "33232",
       "picture": "http://placehold.it/128x128",
       "age": 32,
       "accessLevel": "guest",
@@ -1055,6 +1055,22 @@
       "address": "693 Woodrow Court, Shasta, Marshall Islands, 2726",
       "about": "Ut amet ipsum ex consequat culpa ut anim laborum incididunt nostrud adipisicing elit. Esse exercitation ullamco pariatur ullamco velit excepteur adipisicing. Nostrud mollit labore tempor et occaecat dolore. Ipsum velit ullamco dolore deserunt minim duis elit sit adipisicing consectetur velit nostrud.\r\n",
       "registered": "2017-01-21T10:24:46 -03:00"
+    },
+    {
+      "id": 68,
+      "isActive": false,
+      "balance": "2000",
+      "picture": "https://placehold.it/128x128",
+      "age": 22,
+      "accessLevel": "",
+      "firstName": "Станислав",
+      "lastName": "Гагарин",
+      "company": "ANSTAR",
+      "eemail": "stasgagarin1996@gmail.com",
+      "phone": "12390865",
+      "address": "Аркадия",
+      "about": "Великий харстоунер",
+      "registered": "13.10.2017, 19:34:59"
     }
   ]
 }
