@@ -28,7 +28,7 @@
 
 <script>
 import axios from 'axios'
-import userForm from './user-form'
+import userForm from '@/components/users/user-form'
 
 export default {
   name: 'user-edit',

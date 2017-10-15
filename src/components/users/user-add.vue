@@ -16,7 +16,7 @@
 
 <script>
 import axios from 'axios'
-import userForm from './user-form'
+import userForm from '@/components/users/user-form'
 
 const date = new Date()
 const defaultUser = {
