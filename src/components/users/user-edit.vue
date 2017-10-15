@@ -13,7 +13,7 @@
           <span v-show="errors.all()" class="form-text text-danger" v-for="item in errors.all()" :key="item">*{{ item }}</span>
 
           <div class="buttons-group">
-            <button type="button" class="btn btn-success save" @click="save">
+            <button type="button" class="btn btn-success save" @click="saveUser">
               <preloader :width="18" :height="18" v-if="preloader"></preloader>
               <span v-else>Сохранить изменения</span>
             </button>
@@ -69,7 +69,7 @@ export default {
         })
     },
 
-    save () {
+    saveUser () {
       this.$validator.validateAll()
       if (this.errors.any()) {
         return

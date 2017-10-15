@@ -218,6 +218,7 @@ export default {
 </script>
 
 <style scoped>
+
 .user_wrapper {
   margin: 60px 0 20px;
   width: 100%;

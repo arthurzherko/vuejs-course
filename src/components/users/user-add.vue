@@ -7,7 +7,7 @@
           <div class="d-flex-12">
             <span v-show="errors.all()" class="form-text text-danger" v-for="item in errors.all()" :key="item">*{{ item }}</span>
 
-            <button type="button" class="btn btn-success save" @click="save">Добавить пользователя</button>
+            <button type="button" class="btn btn-success save" @click="saveUser">Добавить пользователя</button>
           </div>
       </div>
     </div>
@@ -49,7 +49,7 @@ export default {
   }),
 
   methods: {
-    save () {
+    saveUser () {
       this.$validator.validateAll()
       if (this.errors.any()) {
         return
