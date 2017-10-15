@@ -55,19 +55,17 @@
 
 <script>
 import axios from 'axios'
-import RowsPerPage from '@/components/pagination/rows-per-page'
-import RowsPaginator from '@/components/pagination/rows-paginator'
 
 export default {
   name: 'users-list',
 
   components: {
-    RowsPerPage,
-    RowsPaginator
+    RowsPerPage: () => import('@/components/pagination/rows-per-page'),
+    RowsPaginator: () => import('@/components/pagination/rows-paginator')
   },
 
   data: () => ({
-    users: [],
+    users: null,
     perPage: 5,
     pageNumber: 1,
     restUrl: 'http://localhost:3004/users/'
@@ -79,14 +77,16 @@ export default {
 
   computed: {
     filteredUsers () {
-      return this.users.filter((item, index) =>
-        index < this.pageNumber * this.perPage &&
-        index > this.pageNumber * this.perPage - this.perPage
-      )
+      if (this.users) {
+        return this.users.filter((item, index) =>
+          index < this.pageNumber * this.perPage &&
+          index >= this.pageNumber * this.perPage - this.perPage
+        )
+      }
     },
 
     usersCount () {
-      return this.users.length
+      if (this.users) return this.users.length
     }
   },
 

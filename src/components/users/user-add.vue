@@ -2,9 +2,13 @@
   <div class="user">
     <div class="container">
       <div class="row">
-        <user-form v-model="user"></user-form>
+          <user-form v-model="user"></user-form>
 
-        <button type="button" class="btn btn-success save" @click="save">Добавить юзера</button>
+          <div class="d-flex-12">
+            <span v-show="errors.all()" class="form-text text-danger" v-for="item in errors.all()" :key="item">*{{ item }}</span>
+
+            <button type="button" class="btn btn-success save" @click="saveUser">Добавить пользователя</button>
+          </div>
       </div>
     </div>
   </div>
@@ -12,7 +16,7 @@
 
 <script>
 import axios from 'axios'
-import userForm from './user-form'
+import userForm from '@/components/users/user-form'
 
 const date = new Date()
 const defaultUser = {
@@ -45,7 +49,12 @@ export default {
   }),
 
   methods: {
-    save () {
+    saveUser () {
+      this.$validator.validateAll()
+      if (this.errors.any()) {
+        return
+      }
+
       axios.post(this.restUrl, this.user)
         .then(res => res.data)
         .then((res) => {
@@ -55,3 +64,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+button.save {
+  display: block;
+  margin-top: 20px;
+}
+</style>

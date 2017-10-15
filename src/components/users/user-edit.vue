@@ -2,16 +2,23 @@
   <div class="user">
     <div class="container">
       <div class="row">
-        <user-form v-model="user"></user-form>
+        <user-form v-if="user" v-model="user"></user-form>
 
-        <div class="actions">
+        <div class="json-wrap">
           <hr>
           <div class="json">
             <pre>{{ user }}</pre>
           </div>
 
-          <button type="button" class="btn btn-success save">Сохранить изменения</button>
-          <button type="button" class="btn btn-danger">Удалить пользователя</button>
+          <span v-show="errors.all()" class="form-text text-danger" v-for="item in errors.all()" :key="item">*{{ item }}</span>
+
+          <div class="buttons-group">
+            <button type="button" class="btn btn-success save" @click="saveUser">
+              <preloader :width="18" :height="18" v-if="preloader"></preloader>
+              <span v-else>Сохранить изменения</span>
+            </button>
+            <button type="button" class="btn btn-danger" @click="deleteUser">Удалить пользователя</button>
+          </div>
         </div>
         
       </div>
@@ -21,22 +28,26 @@
 
 <script>
 import axios from 'axios'
-import userForm from './user-form'
+import userForm from '@/components/users/user-form'
 
 export default {
   name: 'user-edit',
+
   props: {
     id: String,
     required: true
   },
 
   components: {
-    userForm
+    userForm,
+    Preloader: () => import('@/components/common/preloader')
   },
 
   data: () => ({
     user: null,
-    restUrl: 'http://localhost:3004/users/'
+    restUrl: 'http://localhost:3004/users/',
+    preloader: false,
+    veeErrors: []
   }),
 
   mounted () {
@@ -56,6 +67,28 @@ export default {
         .then(res => {
           this.user = res
         })
+    },
+
+    saveUser () {
+      this.$validator.validateAll()
+      if (this.errors.any()) {
+        return
+      }
+
+      this.preloader = true
+      axios.put(this.url, this.user)
+        .then(res => res.data)
+        .then((res) => {
+          this.preloader = false
+        })
+    },
+
+    deleteUser () {
+      axios.delete(this.url)
+        .then(res => res.data)
+        .then((res) => {
+          this.$router.push('/users')
+        })
     }
   }
 }
@@ -65,6 +98,7 @@ export default {
 
 button.save {
   margin: 0 10px 0 0;
+  min-width: 155px;
 }
 
 button:active {
@@ -83,8 +117,12 @@ hr {
   margin-bottom: 20px;
 }
 
-.actions {
-  flex: 0 0 100%;
+.json pre {
+  padding-bottom: 20px;
+}
+
+.buttons-group {
+  margin-top: 20px;
 }
 
 </style>
