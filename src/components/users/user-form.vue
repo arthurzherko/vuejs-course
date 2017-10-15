@@ -1,5 +1,5 @@
 <template>
-  <div class="user_wrapper" v-if="user">
+  <div class="user_wrapper">
     <div class="user_title">
       {{user.firstName}} {{user.lastName}} {{user.phone}}
     </div>
@@ -108,10 +108,12 @@
       <!-- About -->
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Биография</label>
-        <textarea class="form-control" :rows="30" v-model="user.about" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <div ref="editor" class="medium-editor form-control"></div>
       </div>
 
-      <!-- Company -->
+      <div v-html="user.about"></div>
+
+      <!-- Registered -->
       <label for="last_name">Дата регистрации</label>
       <date-picker v-model="user.registered"></date-picker>
 
@@ -124,6 +126,8 @@ import axios from 'axios'
 import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate'
 import ru from 'vee-validate/dist/locale/ru'
+import MediumEditor from 'medium-editor'
+import 'medium-editor/dist/css/medium-editor.css'
 
 Validator.addLocale(ru)
 Vue.use(VeeValidate, {
@@ -141,7 +145,7 @@ export default {
 
   props: {
     user: {
-      // type: Object,
+      type: Object,
       required: true
     }
   },
@@ -158,7 +162,7 @@ export default {
   }),
 
   mounted () {
-
+    this.initMediumEditor()
   },
 
   methods: {
@@ -190,6 +194,24 @@ export default {
 
     toggleDropzone () {
       this.showDropzone = !this.showDropzone
+    },
+
+    initMediumEditor () {
+      /* eslint-disable no-new */
+      var editor = new MediumEditor(this.$refs.editor, {
+        buttonLabels: 'fontawesome',
+        placeholder: {
+          text: 'Расскажите немного о себе'
+        }
+      })
+
+      editor.setContent(this.user.about)
+
+      const self = this
+
+      editor.subscribe('editableInput', function (event, editable) {
+        self.user.about = editor.getContent()
+      })
     }
   }
 }
@@ -238,7 +260,7 @@ button.toggle-dropzone {
   margin: 30px 0;
 }
 
-textarea {
+.medium-editor {
   min-height: 150px;
 }
 

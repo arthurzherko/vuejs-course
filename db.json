@@ -3,7 +3,7 @@
     {
       "id": 1,
       "isActive": true,
-      "balance": "20000$",
+      "balance": "20000",
       "picture": "https://i.imgur.com/3MAF49e.jpg",
       "age": 22,
       "accessLevel": "",
@@ -13,7 +13,7 @@
       "eemail": "arthurzherko@gmail.com",
       "phone": "123123",
       "address": "г. Брест",
-      "about": "Немного биографии",
+      "about": "<p>Привет, меня зовут <b>Артур</b> <i>:)</i></p>",
       "registered": "13.10.2017, 5:06:52"
     },
     {

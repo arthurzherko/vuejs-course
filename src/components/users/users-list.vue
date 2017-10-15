@@ -95,7 +95,6 @@ export default {
       axios.get(this.restUrl)
         .then(res => res.data)
         .then(res => {
-          console.log(res)
           this.users = res
         })
     }

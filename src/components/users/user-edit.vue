@@ -2,7 +2,7 @@
   <div class="user">
     <div class="container">
       <div class="row">
-        <user-form v-model="user"></user-form>
+        <user-form v-if="user" v-model="user"></user-form>
 
         <div class="json-wrap">
           <hr>
